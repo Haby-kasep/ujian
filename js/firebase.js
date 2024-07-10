@@ -21,48 +21,49 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// FUNGSI DATA POST \\
+// Fungsi untuk menampilkan semua data post
 export async function showAllPosts() {
-  try {
-    const myQuery = await getDocs(collection(db,'posts'))
-    let posts = []
-    myQuery.forEach((doc) => {
-      posts.push({id: doc.id,...doc.data()})
-    })
-    return posts
-  }catch(error) {
-    console.error('Error data posts: ', error)
-    throw error
-  }
-}
-
-// FUNGSI UNTUK MENAMPILKAN 1 POSTS\\
-export async function getPostById(postId) {
-  try {
-      const myQuery = doc(db,'posts',postId)
-      const post = await getDoc(myQuery)
-      if(post.exists()) {
-        console.log(post.data());
-        return {id:post.id,...post.data()}
-      }else{
-        console.log('Dokument tidak ditemukan');
-        return null
-      }
-  } catch(error) {
-    console.error('Error data post: ', error)
-    throw error
-
-  }
-}
-  // postingan baru
-  export async function addPost(title, authorId, category, image, content) {
     try {
-      await addDoc(collection(db, 'posts'),{
-        title, authorId, category, image, content
-      })
-      
-    }catch(error){
-      console.error('Error data post'), error
-      throw error
+        const myQuery = await getDocs(collection(db, 'posts'))
+        let posts = []
+        myQuery.forEach((doc) => {
+            posts.push({id: doc.id, ...doc.data()})
+        })
+        return posts
+    } catch(error) {
+        console.error('Error data posts: ', error)
+        throw error
     }
-  }
+}
+
+// Fungsi untuk menampilkan 1 post
+export async function getPostById(postId) {
+    try {
+        const myQuery = await doc(db, 'posts', postId)
+        const post = await getDoc(myQuery)
+        if (post.exists()) {
+            console.log(post.data());
+            return {id: post.id, ...post.data()}
+        } else {
+            console.log('Dokument Tidak Di Temukan')
+            return null
+        }
+    } catch(error) {
+        console.error('Error data post: ', error)
+        throw error
+    }
+}
+
+// fungsi untuk menambah 
+
+export async function addPost(title,authorId,categoty,image,content) {
+    try {
+        await addDoc(collection(db, 'posts'),{
+            title,authorId,categoty,image,content
+        })
+        
+    }catch (error) {
+        console.error('Error data post: ', error)
+        throw error
+    }
+}

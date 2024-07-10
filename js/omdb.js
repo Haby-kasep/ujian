@@ -1,79 +1,76 @@
-$('#tombol').on('click', function(){
-    $('#daftar-film').html('')
+$('#tombol').on('click', function() {
+    $('#daftar-film').html(''); 
     $.ajax({
-        url : 'http://www.omdbapi.com',
-        type :'get',
+        url: 'http://www.omdbapi.com/',
+        type: 'get',
         dataType: 'json',
-        data:{
-            'apikey': '273eda5f',
-            's': $('#Cari').val()
+        data: {
+            'apikey': '273eda5f', 
+            's': $('#cari').val() 
         },
-        success: function (hasil) {
+        success: function(hasil) {
             if (hasil.Response == 'True') {
-                let film =hasil.Search
-                console.log(film);
-                $.each(film, function(index, data) {
+                let film = hasil.Search;
+                console.log(hasil);
+                $.each(film, function(i, data) {
                     $('#daftar-film').append(`
-                       <div class="col-md-4 mb-3">
-                                <div class="card" style="width: 18rem;">
-                                    <img src="${data.Poster !== 'N/A' ? data.Poster : 'https://via.placeholder.com/150'}" class="card-img-top" alt="${data.Title}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${data.Title}</h5>
-                                        <p class="card-text">Year: ${data.Year}</p>
-                                        <a href="https://www.imdb.com/title/${data.imdbID}" target="_blank" class="btn btn-danger detail"data-id="${data.imdbID}" data-bs-toggle="modal"
-           data-bs-target="#exampleModal">Detail 🤬</a>
-                                    </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="${data.Poster !== 'N/A' ? data.Poster : 'https://via.placeholder.com/150'}" class="card-img-top" alt="${data.Title}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${data.Title}</h5>
+                                    <p class="card-text">Year: ${data.Year}</p>
+                                    <a href="https://www.imdb.com/title/${data.imdbID}" target="_blank" class="btn btn-info detail" data-id="${data.imdbID}" data-bs-toggle="modal"data-bs-target="#exampleModal">Detail film 🔍</a>
                                 </div>
                             </div>
-                        
-  
-                    `)
-                })
-            }else{
-                $('#daftar-film').append(`
-                    <div class="row" id="daftar-film">
-                    <div class="col">
-                      <h5 class="text-center text-danger"> ${hasil.Error} </h5>
-                    </div>
-                    </div>`)
-            }
-        }
-    })
+                        </div>`
+                    );
+                });
+        } else {
+        $('#daftar-film').append(`
+            <div class="col">
+                <h5 class="text-center text-dange">${hasil.Error} </h5>
+            </div> 
+        `)
+        }   
+    }
+})
 });
-// EVENT BUNDLING\\
-$('#daftar-film').on('click','.detail',function(){
-    let id= $(this).data('id')
-    console.log(id);
-    $.ajax({ url : 'http://www.omdbapi.com',
-        type :'get',
-        dataType: 'json',
-        data:{
-            'apikey': '273eda5f',
-            'i': $(this).data('id')
-        },
-        success: function (hasil) {
-            if (hasil.Response == 'True'){
-                $('.modal-body').html(`
-                 <div class="container-fluid">
-                        <div class="row">
-                        <div class="col-md-4">
-                            <img src="${hasil.Poster}"class="img-fluid" alt="">
-                        </div>
-                        <div class="col-md-8">
-                        <h5>${hasil.Title}
-                            <ul class="list-group">
-                            <li class="list-group-item">Released: ${hasil.Released}</li>
-                            <li class="list-group-item">Genre: ${hasil.Genre}</li>
-                            <li class="list-group-item">Director: ${hasil.Director}</li>
-                            <li class="list-group-item">Actors: ${hasil.Actors}</li>
-                            <li class="list-group-item">Awards: ${hasil.Awards}</li>
-                            </ul>
-                        </div>
-                        </div>
-                    </div>
-                `)
-            }
 
+// event bundling
+$('#daftar-film').on('click', '.detail', function () {
+let id = $(this).data('id')
+console.log(id);
+$.ajax({
+    url: 'https://www.omdbapi.com/',
+    type: 'get',
+    dataType: 'json',
+    data: {
+        'apikey': '7476faa', 
+        'i': $(this).data('id')
+    },
+    success: function(hasil){
+        if(hasil.Response =='True'){
+            $('.modal-body').html(`
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="${hasil.Poster}" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-md-8">
+                    <ul class="list-group">
+                    <li class="list-group-item"><strong>Title: </strong>${hasil.Title}</li>
+                    <li class="list-group-item"><strong>release: </strong>${hasil.Release}</li>
+                    <li class="list-group-item"><strong>gende: </strong>${hasil.Gende}</li>
+                    <li class="list-group-item"><strong>director: </strong>${hasil.Director}</li>
+                    <li class="list-group-item"><strong>artors: </strong>${hasil.Artors}</li>
+                    <li class="list-group-item"><strong>awards: </strong>${hasil.Awards}</li>
+                    </ul>
+                    </div>
+                </div>
+                </div>
+            `)
         }
-    })
+    } 
+})
 })
