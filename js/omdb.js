@@ -1,7 +1,7 @@
 $('#tombol').on('click', function() {
     $('#daftar-film').html(''); 
     $.ajax({
-        url: 'http://www.omdbapi.com/',
+        url: 'https://www.omdbapi.com/',
         type: 'get',
         dataType: 'json',
         data: {
